@@ -2,9 +2,9 @@ import cv2
 import sys
 sys.path.append('..')
 from math import cos, sin
-from lib.FSANET_model import *
+from FSA_Net.lib.FSANET_model import *
 import numpy as np
-from keras.layers import Average
+from keras.layers import Average, Input
 from keras.models import Model
 
 from bbox import AnnotationContainer, AnnotationEntry, AnnotationInstance, BBox
@@ -45,7 +45,7 @@ def draw_axis(img, yaw, pitch, roll, tdx=None, tdy=None, size = 50):
     return img
 
 
-def get_orientation_model(input_side=64):
+def get_orientation_model(input_side, weights_dir):
     # Parameters
     num_capsule = 3
     dim_capsule = 16
@@ -68,15 +68,15 @@ def get_orientation_model(input_side=64):
 
     print('Loading models ...')
 
-    weight_file1 = '../pre-trained/300W_LP_models/fsanet_capsule_3_16_2_21_5/fsanet_capsule_3_16_2_21_5.h5'
+    weight_file1 = f'{weights_dir}/fsanet_capsule_3_16_2_21_5/fsanet_capsule_3_16_2_21_5.h5'
     model1.load_weights(weight_file1)
     print('Finished loading model 1.')
 
-    weight_file2 = '../pre-trained/300W_LP_models/fsanet_var_capsule_3_16_2_21_5/fsanet_var_capsule_3_16_2_21_5.h5'
+    weight_file2 = f'{weights_dir}/fsanet_var_capsule_3_16_2_21_5/fsanet_var_capsule_3_16_2_21_5.h5'
     model2.load_weights(weight_file2)
     print('Finished loading model 2.')
 
-    weight_file3 = '../pre-trained/300W_LP_models/fsanet_noS_capsule_3_16_2_192_5/fsanet_noS_capsule_3_16_2_192_5.h5'
+    weight_file3 = f'{weights_dir}/fsanet_noS_capsule_3_16_2_192_5/fsanet_noS_capsule_3_16_2_192_5.h5'
     model3.load_weights(weight_file3)
     print('Finished loading model 3.')
 
@@ -190,7 +190,6 @@ def add_face_and_head_orientation(
 
 
 if __name__ == '__main__':
-    # main()
     def get_frame_generator(video_path):
         vidcap = cv2.VideoCapture(str(video_path))
         frame = 0
