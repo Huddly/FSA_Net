@@ -1,1 +1,1 @@
-KERAS_BACKEND=tensorflow python3  demo_FSANET_ssd.py
+KERAS_BACKEND=tensorflow python3  predict_on_bbox.py

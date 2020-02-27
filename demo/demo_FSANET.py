@@ -172,7 +172,19 @@ def main():
             cv2.imwrite('img/'+str(img_idx)+'.png',input_img)
             
         else:
-            input_img = draw_results(detected,input_img,faces,ad,img_size,img_w,img_h,model,time_detection,time_network,time_plot)
+            input_img = draw_results(
+                detected,           # Some variable
+                input_img,          # Input image
+                faces,              # face detections (cascade)
+                ad,                 # 0.6
+                img_size,           # 64 (model input side width/height)
+                img_w,              # Raw image width 1024
+                img_h,              # Raw image height 780
+                model,              # Composit of 3 submodels
+                time_detection,     # 0 when face detected
+                time_network,       # 0 when face detected
+                time_plot           # 0 when face detected
+            )
 
 
         if len(detected) > len(detected_pre) or img_idx%(skip_frame*3) == 0:
